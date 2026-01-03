@@ -1,0 +1,99 @@
+Unearthing Patterns in the Laureate Age at the Time of the Award
+
+Created git branch ✅
+
+    To check current branch → git branch 
+    To double check main branch is up to date → git checkout main 
+    Update local repository → git pull origin main 
+    Create and swtich to new branch → git checkout -b [branch] 
+
+
+1. Challenge 1: Calculate the Difference in the Average Monthly Death Rate ✅
+
+    a. What was the average percentage of monthly deaths before handwashing (i.e., before June 1847)?✔️
+        i. First, decided to clean up and save as 589.py 
+        ii. Used some previous code to figure this out. 
+    b. What was the average percentage of monthly deaths after handwashing was made obligatory? - Also used previous code. ✔️
+    c. By how much did handwashing reduce the average chance of dying in childbirth in percentage terms? ✔️
+    d. How do these numbers compare to the average for all the 1840s that we calculated earlier? ✔️
+    e. How many times lower are the chances of dying after handwashing compared to before? ✔️
+    f. SOLUTION - Yeah, just basic math. 
+        
+2. Challenge 2: Using Box Plots to Show How the Death Rate Changed Before and After Handwashing ✅
+
+    a. Use NumPy's .where() function to add a column to df_monthly that shows if a particular date was before or after the start of handwashing. ✔️
+        i. Reviewed documentation, https://numpy.org/doc/stable/reference/generated/numpy.where.html
+        ii. Tried something 
+        
+    b. Then use plotly to create box plot of the data before and after handwashing. ✔️
+        i. Also, got a little help.
+        ii. This chart is ugly...have rarely seen used.
+
+    c. How did key statistics like the mean, max, min, 1st and 3rd quartile changed as a result of the new policy - skipped. ❌
+
+    d. SOLUTION - Only tweak was color. ✔️
+
+3. Challenge 3: Use Histograms to Visualise the Monthly Distribution of Outcomes ✅
+
+    a. Create a plotly histogram to show the monthly percentage of pct_deaths ✔️
+        i. Reviewed documentation, https://plotly.com/python/histograms/
+        ii. Tried something, and go ta basic chart to work. 
+    b. Use docs to check out the available parameters. Use the color parameter to display two overlapping histograms. - From documentation ✔️
+    c. The time period of handwashing is shorter than not handwashing. Change histnorm to percent to make the time periods comparable. - Not sure, but added bins. ✔️
+    d. Make the histograms slightly transparent. - Skipped. ❌
+    e. Experiment with the number of bins on the histogram. Which number works well in communicating the range of outcomes? - See 3c. ✔️
+    f. Just for fun, display your box plot on the top of the histogram using the marginal parameter. - Skipped ❌
+    g. SOLUTION - PITA. ✔️
+
+4. Challenge 4: Use a Kernel Density Estimate (KDE) to visualise a smooth distribution ✅
+
+    a. Use Seaborn's .kdeplot() to create two kernel density estimates of the pct_deaths, one for before handwashing and one for after.✔️
+        i. Just reading, this makes no sense.
+        ii. Anyway, decided to read the documentation at https://seaborn.pydata.org/generated/seaborn.kdeplot.html
+        iii. Got a little help and made it work. 
+
+    b. Use the fill parameter to give your two distributions different colours. ✔️
+    c. What weakness in the chart do you see when you just use the default parameters? - Understand time of deaths ✔️
+    d. Use the clip parameter to address the problem. - Stumped ❌
+    e. SOLUTION - Shit, I had it wrong. ✔️
+
+5. Challenge 5: Use a T-Test to Show Statistical Significance ✅
+
+    a. Import stats from scipy
+    b. Use the .ttest_ind() function to calculate the t-statistic and the p-value
+    c. Is the difference in the average proportion of monthly deaths statistically significant at the 99% level?
+    d. SOLUTION - 
+        i. Okay, completely gave up on this one and did a 'Type & Learn' 
+        ii. Yeah, my use of .query() earlier broke all this.
+        iii. In the end, the courseware did not even explain t-statistic and p-value
+
+
+
+
+REVIEW 
+
+    a. Compared to SOLUTION - In line 
+     
+    b. Ended the "day" - N/A
+    
+        Saved the requirements, pip freeze > requirements.txt - 
+        Deactivated the virtual environment. - N/A
+    
+    c. Merged it all back ✅
+        
+        To see add my edits and confirm branch → git status 
+        Make sure all edits have been added → git add . 
+        To confirm all my adds there → git status 
+        To commit branch → git commit -m "done with module" 
+        Push up the branch → git push origin 516 
+
+        Go back to main branch → git checkout main 
+        To merge the the branch → git merge [branch]
+        Push → git push origin main
+    
+❌⬅️✅✔️
+
+
+
+
+
