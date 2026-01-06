@@ -1,5 +1,14 @@
+# - Yellow -  Information with a general, but relative importance
+# ? Orange -  Examples, abbreviations, acronyms, or explanations
+# + Green -  Key words, proper nouns, dates, symbols or mathematical formulas
+# ~ Blue -  Definitions of key words, or tabular data
+# ! Pink - Important, relative to a test or my career
+# * Purple -  Personal interest
+# // Gray - Done
+
 # - Import modules to follow my CONVENTIONS 
 
+from asyncio import sleep
 import art               # - for ASCII art
 import os                # - for OS commands to clear the screen
 import sys               # - for system-specific parameters and functions
@@ -10,15 +19,39 @@ import time              # - for time-related functions
 # - Define "global" variables and functions.
 
 ttt = "Tic Tac Toe" 
-board = []
-game = "NEW" 
-computer_symbol = ""
-user_symbol = ""
-coin = ""      
-flip = ""
-turn = ""
+
+board = [
+    ["1", "2", "3"],
+    ["4", "5", "6"],
+    ["7", "8", "9"] 
+]
+
+game = "NEW" #? - passing to loop to start a new game 
+
 
 def coin_flip(pick):
+
+    print(f"Picked: {pick}")
+    return("TAILS")
+
+""" 
+    while True:
+        coin = input("\nNow, flip virtual coin to go first by picking Heads or Tails (H, T, Heads, Tails, etc.) \u2192 ")
+        coin = coin.strip().upper()
+        if coin in ["H", "HEADS"]:
+            coin = "HEADS"
+            location = "latitude"
+            break
+        elif coin in ["T", "TAILS"]:
+            coin = "TAILS"
+            location = "longitude"
+            break
+        else:
+            print("\nInvalid choice. Please enter h, t, H, or T, heads or tails.")
+        
+    #! Flip the coin using the location of the ISS as a random number generator
+
+    print(f"\nYou picked {coin}, now flipping the coin (actually the {location} of the International Space Station)...")
 
     iss_dict = api_request(url=iss_url, params=iss_parms)
 
@@ -26,24 +59,34 @@ def coin_flip(pick):
         heads = float(iss_dict["iss_position"]["latitude"])
         tails = float(iss_dict["iss_position"]["longitude"])
 
-    if pick in ["H", "HEADS"]:
+    if coin in ["H", "HEADS"]:
         last_digit = str(heads).split('.')[-1][-1]
         last_digit = int(last_digit)
+        print(f"\nThe {location} of the ISS is {heads}.")
         if last_digit % 2 == 0:
-            result = "HEADS"
+            print("It's Heads! USER wins the flip and goes first.")
+            turn = "USER"
         else:
-            result = "TAILS"
+            print("It's Tails! The COMPUTER wins the flip and goes first.")
+            turn = "COMPUTER"
     else:
         last_digit = str(tails).split('.')[-1][-1]
         last_digit = int(last_digit)
+        print(f"The {location} of the ISS is {tails}.")
         if last_digit % 2 == 0:
-            result = "TAILS"
-        else:
-            result = "HEADS"
+            print("It's Tails! USER wins the flip and goes first.")
+            turn = "USER"
 
-    return result
+        else:
+            print("It's Heads! The computer wins the flip and goes first.")
+            turn = "COMPUTER" """
+
+
+
 
 def print_board(choice=None, symbol=None):
+
+    global board 
 
     if symbol:   #? udpating with a choice and symbol are provided
         for row in range(3):
@@ -51,27 +94,36 @@ def print_board(choice=None, symbol=None):
                 if board[row][col] == str(choice):
                     board[row][col] = symbol
 
+
+    print(f"Choice: {choice}, Symbol: {symbol}, Available: {available_locations()}, Win: {check_win(symbol)}\n") #? - debug line  
+
+
+
     for row in range(3): #? print the board
         print(f" {board[row][0]} | {board[row][1]} | {board[row][2]} ")
         if row < 2:
             print("---|---|---")
-
     print("\n")
 
-def check_win(symbol):
 
-    for row in board: #? check rows
+
+def check_win(symbol):
+    # Check rows
+    for row in board:
         if all(cell == symbol for cell in row):
             return True
 
-    for col in range(3): #? check columns
+    # Check columns
+    for col in range(3):
         if all(board[row][col] == symbol for row in range(3)):
             return True
 
-    if all(board[i][i] == symbol for i in range(3)) or all(board[i][2 - i] == symbol for i in range(3)): #? check diagonals
+    # Check diagonals
+    if all(board[i][i] == symbol for i in range(3)) or all(board[i][2 - i] == symbol for i in range(3)):
         return True
 
     return False
+
 
 def available_locations():
     available_spots = [cell for row in board for cell in row if cell.isdigit()]
@@ -79,10 +131,12 @@ def available_locations():
         return available_spots
     return None
 
+
+
 def clear_screen():
     if os.name == 'nt':  # 'nt' stands for Windows
         os.system('cls')
-    else:                # For macOS and Linux (posix-based systems)
+    else:  # For macOS and Linux (posix-based systems)
         os.system('clear')
 
 def api_request(url, params=None):
@@ -92,21 +146,28 @@ def api_request(url, params=None):
     try:
         response.raise_for_status()
         # print(f"Status → {http_codes[response.status_code]}")
+
     except requests.exceptions.HTTPError as status:
         print(f"Error → {status}")
         return f"Error → {status}"
+
     else:
+
         try:
             dict = response.json()
             # print(f"JSON: → {response.json()}")
         except requests.exceptions.JSONDecodeError as status:
-            # print(f"Error → {status}. \nThe response might be empty or invalid.")
+            # print(
+            #    f"Error → {status}. \nThe response might be empty or invalid.")
             return f"Error → {status}"
+
         else:
             # print(f"Status → {http_codes[response.status_code]}")
             # print(f"URL: → {response.url}")
+
             # print("Dict: →", dict)
             return dict
+
 
 # - Set up APIs
 
@@ -159,33 +220,53 @@ while True:
     else:
         print("\nInvalid choice. Please enter h, t, H, or T, heads or tails.")
     
-flip = coin_flip(coin)
+#! Flip the coin using the location of the ISS as a random number generator
 
-if flip == coin:
-    turn = "USER"
-    user_symbol = "X"
-    computer_symbol = "O"
+print(f"\nYou picked {coin}, now flipping the coin (actually the {location} of the International Space Station)...")
+
+""" iss_dict = api_request(url=iss_url, params=iss_parms)
+
+if isinstance(iss_dict, dict):
+    heads = float(iss_dict["iss_position"]["latitude"])
+    tails = float(iss_dict["iss_position"]["longitude"])
+
+if coin in ["H", "HEADS"]:
+    last_digit = str(heads).split('.')[-1][-1]
+    last_digit = int(last_digit)
+    print(f"\nThe {location} of the ISS is {heads}.")
+    if last_digit % 2 == 0:
+        print("It's Heads! USER wins the flip and goes first.")
+        turn = "USER"
+    else:
+        print("It's Tails! The COMPUTER wins the flip and goes first.")
+        turn = "COMPUTER"
 else:
-    turn = "COMPUTER"
-    user_symbol = "O"
-    computer_symbol = "X"
+    last_digit = str(tails).split('.')[-1][-1]
+    last_digit = int(last_digit)
+    print(f"The {location} of the ISS is {tails}.")
+    if last_digit % 2 == 0:
+        print("It's Tails! USER wins the flip and goes first.")
+        turn = "USER"
+
+    else:
+        print("It's Heads! The computer wins the flip and goes first.")
+        turn = "COMPUTER"
+ """
+
+turn = "USER"
+
+
 
 #! Play/loop the game
 
 while True:
 
     if turn == "USER" and game == "NEW":
-        print(f"You choose {coin}, and won the coin flip!")
         print("You will be X and go first.")
         input("\nPress Enter to start the game.")
 
-    elif turn == "COMPUTER" and game == "NEW":
-        print(f"You choose {coin}, but the flip was {flip}")
-        print("The computer will be X and go first.")
-        input("\nPress Enter to start the game.")
 
-
-    if game.strip().upper() in ["NEW", "AGAIN"]:
+    if game.strip().upper() in ["NEW"]:
         board = [
             ["1", "2", "3"],
             ["4", "5", "6"],
@@ -215,14 +296,14 @@ while True:
         if str(choice) not in available_locations():
             print("That cell is already taken. Please choose another one.")
             continue
-        symbol = user_symbol
+        symbol = "X"
         turn = "COMPUTER"
 
     elif turn == "COMPUTER":
 
         choice = random.choice(available_locations())
         print(f"The computer selected \u2192 {choice}.")    
-        symbol = computer_symbol
+        symbol = "O"
         turn = "USER"
         time.sleep(3)
 
@@ -230,20 +311,21 @@ while True:
     print(art.text2art(ttt, font='medium'))
     print_board(choice,symbol)
     
-    if check_win(user_symbol): #? check for win
+    if check_win("X"):
         print("USER wins!")
         game = "OVER"
-    elif check_win(computer_symbol):
+    elif check_win("O"):
         print("COMPUTER wins!")
         game = "OVER"
     elif not available_locations():
         print("It's a tie!")
         game = "OVER"
 
-    if game == "OVER": #? ask to play again 
+
+    if game == "OVER":
         game = input("Would you like to play again? (Y,N, Yes, No, etc.) \u2192 ")
         if game.strip().upper() in ["Y", "YES"]:
-            game = "AGAIN"
+            game = "NEW"
         else:
             print("Thanks for playing! Goodbye!")
             break
